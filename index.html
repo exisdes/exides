@@ -133,28 +133,26 @@
             display: none; /* Initially hide the close button */
         }
 
-.text-area {
-    position: absolute;
-    top: 20%;  /* Adjust as needed */
-    left: 55%;  /* Adjust as needed */
-    width: 28%; /* Initial width as percentage of the popup */
-    max-width: 90%; /* Ensure it doesn't exceed 90% of the popup width */
-    height: auto;
-    max-height: calc(1.5em * 12); /* Restrict to 12 lines using line-height */
-    background: transparent;
-    #border: 1px solid #20102d28; /* Match border with option button */
-    border-radius: 12px;
-    padding: 10px;
-    color: black;  /* Text color */
-    font-size: 1.2em; /* Responsive font size */
-    line-height: 1.5em;  /* Responsive line height */
-    z-index: 10;  /* Ensures it sits on top of the image */
-    resize: none;  /* Disables resizing */
-    outline: none;
-    overflow: hidden;  /* Prevent scrolling */
-    box-sizing: border-box; /* Include padding and border in width calculations */
-}
-
+        .text-area {
+            position: absolute;
+            top: 20%;  /* Adjust as needed */
+            left: 55%;  /* Adjust as needed */
+            width: 28%; /* Initial width as percentage of the popup */
+            max-width: 90%; /* Ensure it doesn't exceed 90% of the popup width */
+            height: 60%; /* Set height as percentage for responsiveness */
+            background: transparent;
+            border: 1px solid #20102d28; /* Match border with option button */
+            border-radius: 12px;
+            padding: 10px;
+            color: black;  /* Text color */
+            font-size: 1.2em; /* Responsive font size */
+            line-height: 1.5em;  /* Responsive line height */
+            z-index: 10;  /* Ensures it sits on top of the image */
+            resize: none;  /* Disables resizing */
+            outline: none;
+            overflow: hidden;  /* Prevent scrolling */
+            box-sizing: border-box; /* Include padding and border in width calculations */
+        }
 
         .bg{
             background-image: url('logo1.jpg');
@@ -171,7 +169,7 @@
     </div>
 
     <div class="container">
-        <h1>Select an option</h1>
+        <h1>Select an Option</h1>
         <div class="options">
             <div class="option" onclick="showImage('GRATEFUL_FOR_YOUR_LEADERSHIP.jpg', 'Grateful for your leadership')">GRATEFUL FOR YOUR LEADERSHIP</div>
             <div class="option" onclick="showImage('YOURE_SIMPLY_OUTSTANDING!.jpg', 'You’re simply outstanding!')">YOU’RE SIMPLY OUTSTANDING!</div>
@@ -298,7 +296,7 @@
                 const dataURL = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
                 link.href = dataURL;
-                link.download = 'dowloand.png';
+                link.download = 'image_with_text.png';
                 link.click();
             };
         }
