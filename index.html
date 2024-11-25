@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eximietas Design</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Set a light purple background */
+        body {
+            background-color: #F3E8FF; /* Soft lavender purple */
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Logo styles */
+        .logo {
+            text-align: right;
+        }
+
+        .logo img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Main container styles */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+            height: calc(100vh - 100px); /* Adjust height to accommodate the logo */
+            margin-right: 20%;
+        }
+
+        /* Title styling */
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #6C4A87; /* Deep purple for title */
+            text-align: center;
+        }
+
+        /* Option button styles */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .option {
+            font-size: 1.2em;
+            color: #6C4A87;  /* Set deep purple text color */
+            padding: 15px;
+            text-align: center;
+            background-color: #FFFFFF; /* White background for buttons */
+            border: 2px solid #6C4A87; /* Border matching the title */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #B29DD9; /* Soft purple on hover */
+            color: white;  /* White text on hover */
+            transform: scale(1.05);  /* Slight scaling effect */
+        }
+
+        /* Popup window styles */
+        .image-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            padding: 0;
+            position: relative;
+            width: 80vw; /* Set the image to take most of the screen width */
+            height: 80vh; /* Set the image to take most of the screen height */
+            overflow: hidden;
+        }
+
+        .popup-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;  /* Ensures the image fits entirely within the popup */
+        }
+
+        .popup-content button {
+            background-color: #B29DD9;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .popup-content button:hover {
+            background-color: #6C4A87; /* Deep purple on hover */
+        }
+
+        /* Close button (X) outside the popup window */
+        .popup-close {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            color: #FFFFFF;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1100; /* Ensures it's on top of the popup */
+            display: none; /* Initially hide the close button */
+        }
+
+        .text-area {
+            position: absolute;
+            top: 20%;  /* Adjust as needed */
+            left: 55%;  /* Adjust as needed */
+            width: 28%; /* Initial width as percentage of the popup */
+            max-width: 90%; /* Ensure it doesn't exceed 90% of the popup width */
+            height: 60%; /* Set height as percentage for responsiveness */
+            background: transparent;
+            border: 1px solid #20102d28; /* Match border with option button */
+            border-radius: 12px;
+            padding: 10px;
+            color: black;  /* Text color */
+            font-size: 1.2em; /* Responsive font size */
+            line-height: 1.5em;  /* Responsive line height */
+            z-index: 10;  /* Ensures it sits on top of the image */
+            resize: none;  /* Disables resizing */
+            outline: none;
+            overflow: hidden;  /* Prevent scrolling */
+            box-sizing: border-box; /* Include padding and border in width calculations */
+        }
+
+        .bg{
+            background-image: url('./images/logo.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+    </style>
+</head>
+<body class="bg">
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="images/download.png" alt="Logo"> <!-- Replace with the actual path to your logo image -->
+    </div>
+
+    <div class="container">
+        <h1>Select an option</h1>
+        <div class="options">
+            <div class="option" onclick="showImage('images/GRATEFUL_FOR_YOUR_LEADERSHIP.jpg', 'Grateful for your leadership')">GRATEFUL FOR YOUR LEADERSHIP</div>
+            <div class="option" onclick="showImage('images/YOURE_SIMPLY_OUTSTANDING!.jpg', 'You’re simply outstanding!')">YOU’RE SIMPLY OUTSTANDING!</div>
+            <div class="option" onclick="showImage('images/GRATEFUL_FOR_YOUR_KINDNESS.jpg', 'Grateful for your kindness!')">GRATEFUL FOR YOUR KINDNESS!</div>
+            <div class="option" onclick="showImage('images/YOUR_EMPATHY_MAKES_A_DIFFERENCE.jpg', 'Your empathy makes a difference')">YOUR EMPATHY MAKES A DIFFERENCE</div>
+            <div class="option" onclick="showImage('images/GUIDANCE_WE_TRULY_VALUE.jpg', 'Guidance we truly value')">GUIDANCE WE TRULY VALUE</div>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="popup" class="image-popup">
+        <div class="popup-content">
+            <img id="popup-img" src="" alt="Popup Image">
+            <div id="textarea-container"></div>
+            <button onclick="downloadImage()">Download</button>
+        </div>
+    </div>
+
+    <!-- Close Button (X) -->
+    <span class="popup-close" onclick="closePopup()">×</span>
+
+    <script>
+        function showImage(imageSrc, textPlaceholder) {
+            // Display the image in the popup
+            document.getElementById('popup-img').src = imageSrc;
+            document.getElementById('popup').style.display = 'flex';
+            document.querySelector('.popup-close').style.display = 'block'; // Show close button when the popup appears
+    
+            // Create a new text area dynamically for the selected image
+            const textAreaContainer = document.getElementById('textarea-container');
+            textAreaContainer.innerHTML = ''; // Clear any previous text areas
+            const textArea = document.createElement('textarea');
+            textArea.classList.add('text-area');
+            textArea.placeholder = textPlaceholder;  // Set placeholder text dynamically
+            textAreaContainer.appendChild(textArea);
+    
+            adjustTextArea(); // Adjust the textarea after creating it
+        }
+    
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.querySelector('.popup-close').style.display = 'none'; // Hide the close button when the popup is closed
+        }
+    
+        function downloadImage() {
+            const imageSrc = document.getElementById('popup-img').src;
+            const textContent = document.querySelector('.text-area').value;
+    
+            const image = new Image();
+            image.src = imageSrc;
+    
+            image.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = image.width;
+                canvas.height = image.height;
+    
+                // Draw the image to the canvas
+                ctx.drawImage(image, 0, 0);
+    
+                // Now handle the text in the second part of the image (text area)
+                const textarea = document.querySelector('.text-area');
+                const textareaRect = textarea.getBoundingClientRect();
+                const imageRect = document.getElementById('popup-img').getBoundingClientRect();
+    
+                // Define the region for the text (second part of the image)
+                const logoHeight = image.height * 0.4;  // Assume the logo takes 40% of the height
+                const textAreaHeight = image.height;  // Remaining space for text
+                let offsetX = imageRect.left * 4;  // Offset X for text
+                if(window.innerWidth <= 768){
+                    offsetX = imageRect.left * 10
+                }
+                if(window.innerWidth <= 1024){
+                    offsetX = imageRect.left * 7.5
+                }
+                if(window.innerWidth <= 1440){
+                    offsetX = imageRect.left * 5.5
+                }
+                const offsetY = 150;  // Starting Y position for text (after the logo)
+    
+                const fontSize = 26;
+                const lineHeight = 40;
+                ctx.font = `${fontSize}px Arial`;
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+    
+                const maxWidth = 320;  // 80% of the image width for wrapping text
+                const lines = textContent.split('\n');
+                let lineCount = 0;
+    
+                // Loop through the text and break it into lines that fit within the text area (second part of the image)
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    let words = line.split(' ');
+                    let currentLine = '';
+    
+                    for (let j = 0; j < words.length; j++) {
+                        const testLine = currentLine + words[j] + ' ';
+                        const testWidth = ctx.measureText(testLine).width;
+    
+                        if (testWidth > maxWidth) {
+                            // Draw the current line and move to the next line
+                            ctx.fillText(currentLine, offsetX, offsetY + lineCount * lineHeight);
+                            currentLine = words[j] + ' ';
+                            lineCount++;
+    
+                            if (lineCount * lineHeight >= textAreaHeight * 0.9) {
+                                break;  // Stop if text exceeds 90% of the text area height
+                            }
+                        } else {
+                            currentLine = testLine;
+                        }
+                    }
+    
+                    ctx.fillText(currentLine, offsetX, offsetY + lineCount * lineHeight);
+                    lineCount++;
+                    if (lineCount * lineHeight >= textAreaHeight * 0.9) {
+                        break;  // Stop if text exceeds 90% of the text area height
+                    }
+                }
+    
+                // Convert the canvas with the image and text into a downloadable image
+                const dataURL = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = dataURL;
+                link.download = 'image_with_text.png';
+                link.click();
+            };
+        }
+    
+        // Function to dynamically adjust the text area size based on the image
+        function adjustTextArea() {
+            const textarea = document.querySelector('.text-area');
+            const popup = document.getElementById('popup-img').getBoundingClientRect();
+    
+            // Adjust the width of the text area to be 80% of the image width (as per the design)
+            const maxWidth = popup.width * 0.8;
+            if (textarea.offsetWidth > maxWidth) {
+                textarea.style.width = maxWidth + 'px';
+            }
+        }
+    
+        // Adjust the text area size when the window is resized (optional)
+        window.addEventListener('resize', adjustTextArea);
+    
+        // Ensure the text area is properly adjusted when the image is loaded
+        document.getElementById('popup-img').addEventListener('load', adjustTextArea);
+    </script>
+    
+    
+    
+    </body>
+</html>
+
