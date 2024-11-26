@@ -133,26 +133,27 @@
             display: none; /* Initially hide the close button */
         }
 
-        .text-area {
-            position: absolute;
-            top: 20%;  /* Adjust as needed */
-            left: 55%;  /* Adjust as needed */
-            width: 28%; /* Initial width as percentage of the popup */
-            max-width: 90%; /* Ensure it doesn't exceed 90% of the popup width */
-            height: 60%; /* Set height as percentage for responsiveness */
-            background: transparent;
-            #border: 1px solid #20102d28; /* Match border with option button */
-            border-radius: 12px;
-            padding: 10px;
-            color: black;  /* Text color */
-            font-size: 1.2em; /* Responsive font size */
-            line-height: 1.5em;  /* Responsive line height */
-            z-index: 10;  /* Ensures it sits on top of the image */
-            resize: none;  /* Disables resizing */
-            outline: none;
-            overflow: hidden;  /* Prevent scrolling */
-            box-sizing: border-box; /* Include padding and border in width calculations */
-        }
+.text-area {
+    position: absolute;
+    top: 20%;  /* Adjust as needed */
+    left: 55%;  /* Adjust as needed */
+    width: 28%; /* Initial width as percentage of the popup */
+    max-width: 90%; /* Ensure it doesn't exceed 90% of the popup width */
+    height: 60%; /* Set height as percentage for responsiveness */
+    background: transparent;
+    border: none;  /* Explicitly remove border */
+    /* border-radius: 12px; */
+    padding: 10px;
+    color: black;  /* Text color */
+    font-size: 1.2em; /* Responsive font size */
+    line-height: 1.5em;  /* Responsive line height */
+    z-index: 10;  /* Ensures it sits on top of the image */
+    resize: none;  /* Disables resizing */
+    outline: none;  /* Ensure no outline */
+    overflow: hidden;  /* Prevent scrolling */
+    box-sizing: border-box; /* Include padding and border in width calculations */
+}
+
 
         .bg{
             background-image: url('logo1.jpg');
