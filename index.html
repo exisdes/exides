@@ -214,92 +214,107 @@
             document.querySelector('.popup-close').style.display = 'none'; // Hide the close button when the popup is closed
         }
     
-        function downloadImage() {
-            const imageSrc = document.getElementById('popup-img').src;
-            const textContent = document.querySelector('.text-area').value;
-    
-            const image = new Image();
-            image.src = imageSrc;
-    
-            image.onload = function() {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = image.width;
-                canvas.height = image.height;
-    
-                // Draw the image to the canvas
-                ctx.drawImage(image, 0, 0);
-    
-                // Now handle the text in the second part of the image (text area)
-                const textarea = document.querySelector('.text-area');
-                const textareaRect = textarea.getBoundingClientRect();
-                const imageRect = document.getElementById('popup-img').getBoundingClientRect();
-    
-                // Define the region for the text (second part of the image)
-                const logoHeight = image.height * 0.4;  // Assume the logo takes 40% of the height
-                const textAreaHeight = image.height;  // Remaining space for text
-                let offsetX = imageRect.left * 4;  // Offset X for text
-                if(window.innerWidth <= 768){
-                    offsetX = imageRect.left * 10
-                }
-                if(window.innerWidth <= 1024){
-                    offsetX = imageRect.left * 7.5
-                }
-                if(window.innerWidth <= 1440){
-                    offsetX = imageRect.left * 5.5
-                }
-                const offsetY = 150;  // Starting Y position for text (after the logo)
-    
-                const fontSize = 26;
-                const lineHeight = 40;
-                ctx.font = `${fontSize}px Arial`;
-                ctx.fillStyle = 'black';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'top';
-    
-                const maxWidth = 320;  // 80% of the image width for wrapping text
-                const lines = textContent.split('\n');
-                let lineCount = 0;
-    
-                // Loop through the text and break it into lines that fit within the text area (second part of the image)
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    let words = line.split(' ');
-                    let currentLine = '';
-    
-                    for (let j = 0; j < words.length; j++) {
-                        const testLine = currentLine + words[j] + ' ';
-                        const testWidth = ctx.measureText(testLine).width;
-    
-                        if (testWidth > maxWidth) {
-                            // Draw the current line and move to the next line
-                            ctx.fillText(currentLine, offsetX, offsetY + lineCount * lineHeight);
-                            currentLine = words[j] + ' ';
-                            lineCount++;
-    
-                            if (lineCount * lineHeight >= textAreaHeight * 0.9) {
-                                break;  // Stop if text exceeds 90% of the text area height
-                            }
-                        } else {
-                            currentLine = testLine;
-                        }
-                    }
-    
+    function downloadImage() {
+    const imageSrc = document.getElementById('popup-img').src;
+    const textContent = document.querySelector('.text-area').value;
+
+    // Get the image
+    const image = new Image();
+    image.src = imageSrc;
+
+    image.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        // Draw the image to the canvas
+        ctx.drawImage(image, 0, 0);
+
+        // Now handle the text in the second part of the image (text area)
+        const textarea = document.querySelector('.text-area');
+        
+        // Remove the border before downloading
+        textarea.style.border = 'none';  // Remove the border
+        
+        // Get the font size and measure the width of a single character (assuming Arial and font size 26px)
+        const fontSize = 26;
+        ctx.font = `${fontSize}px Arial`;
+        const characterWidth = ctx.measureText('W').width;  // Measure width of a single character (e.g., 'W')
+
+        // Calculate the width to fit exactly 29 characters
+        const textAreaWidth = characterWidth * 29; // 29 characters wide
+        textarea.style.width = textAreaWidth + 'px'; // Update the text area width
+
+        // Handle the text rendering based on the new text area width
+        const textareaRect = textarea.getBoundingClientRect();
+        const imageRect = document.getElementById('popup-img').getBoundingClientRect();
+
+        // Define the region for the text (second part of the image)
+        const logoHeight = image.height * 0.4;  // Assume the logo takes 40% of the height
+        const textAreaHeight = image.height;  // Remaining space for text
+        let offsetX = imageRect.left * 4;  // Offset X for text
+        if(window.innerWidth <= 768){
+            offsetX = imageRect.left * 10
+        }
+        if(window.innerWidth <= 1024){
+            offsetX = imageRect.left * 7.5
+        }
+        if(window.innerWidth <= 1440){
+            offsetX = imageRect.left * 5.5
+        }
+        const offsetY = 150;  // Starting Y position for text (after the logo)
+
+        const lineHeight = 40;
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+
+        const maxWidth = textAreaWidth * 0.8;  // 80% of the new text area width for wrapping text
+        const lines = textContent.split('\n');
+        let lineCount = 0;
+
+        // Loop through the text and break it into lines that fit within the text area (second part of the image)
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            let words = line.split(' ');
+            let currentLine = '';
+
+            for (let j = 0; j < words.length; j++) {
+                const testLine = currentLine + words[j] + ' ';
+                const testWidth = ctx.measureText(testLine).width;
+
+                if (testWidth > maxWidth) {
+                    // Draw the current line and move to the next line
                     ctx.fillText(currentLine, offsetX, offsetY + lineCount * lineHeight);
+                    currentLine = words[j] + ' ';
                     lineCount++;
+
                     if (lineCount * lineHeight >= textAreaHeight * 0.9) {
                         break;  // Stop if text exceeds 90% of the text area height
                     }
+                } else {
+                    currentLine = testLine;
                 }
-    
-                // Convert the canvas with the image and text into a downloadable image
-                const dataURL = canvas.toDataURL('image/png');
-                const link = document.createElement('a');
-                link.href = dataURL;
-                link.download = 'image_with_text.png';
-                link.click();
-            };
+            }
+
+            ctx.fillText(currentLine, offsetX, offsetY + lineCount * lineHeight);
+            lineCount++;
+            if (lineCount * lineHeight >= textAreaHeight * 0.9) {
+                break;  // Stop if text exceeds 90% of the text area height
+            }
         }
+
+        // Convert the canvas with the image and text into a downloadable image
+        const dataURL = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'image_with_text.png';
+        link.click();
+    };
+}
+
     
         // Function to dynamically adjust the text area size based on the image
         function adjustTextArea() {
